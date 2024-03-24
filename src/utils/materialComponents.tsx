@@ -4,7 +4,6 @@ import {Checkbox, CheckboxProps, Menu, Select, SelectChangeEvent, TextField, Tex
 import {PopoverOrigin} from "@mui/material/Popover/Popover";
 import {MenuDropdownItemProps} from "./Entities";
 import {SelectProps} from "@mui/material/Select/Select";
-import "../components/configurationRow/configurationRow.scss";
 import "./globals.scss";
 
 

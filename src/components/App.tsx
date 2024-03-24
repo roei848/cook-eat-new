@@ -3,9 +3,12 @@ import {globals} from '../utils/globals';
 import {addDocument, getDocuments, getDocumentsRealTime} from '../firebase/firestoreCommunicator';
 import {RecipeEntity} from "../utils/Entities";
 import {Category, Relative} from "../utils/Enums";
+import Header from "./header/Header";
+import './app.scss';
 
 export default function App() {
     const [recipes, setRecipes] = useState<RecipeEntity[]>([]);
+    const [searchValue, setSearchValue] = useState<string>('');
 
     useEffect(() => {
         // Assume globals.RecipesCollectionName is defined and holds your collection name
@@ -51,6 +54,7 @@ export default function App() {
 
     return (
         <div className="app-wrapper">
+            <Header searchValue={searchValue} setSearchValue={setSearchValue}/>
             {/*<button onClick={addHardcodedRecipe}>Click Me!</button>*/}
         </div>
     );

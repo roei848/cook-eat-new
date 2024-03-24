@@ -1,0 +1,59 @@
+@import "../../utils/globals";
+
+.header-wrapper {
+  display: flex;
+  justify-content: space-between;
+  height: $header-height;
+  align-items: center;
+  width: 100%;
+}
+
+.header-logo-img {
+  height: 100%;
+  padding-left: 12px;
+}
+
+.header-content {
+  color: white;
+  display: flex;
+  align-items: center;
+}
+
+.home-tab, .categories-tab, .add-recipe-button {
+  cursor: pointer;
+}
+
+.home-tab {
+
+}
+
+.categories-tab {
+
+}
+
+.search-bar-wrapper {
+  margin: 0 12px;
+
+  .search-bar-input {
+    height: 36px;
+    background-color: white;
+    border-radius: 16px;
+    width: 440px;
+    border: 0;
+    display: flex;
+    justify-content: center;
+
+    .search-icon {
+      margin-right: -6px;
+      cursor: pointer;
+    }
+
+    fieldset {
+      border: 0;
+    }
+  }
+}
+
+.add-recipe-button {
+
+}

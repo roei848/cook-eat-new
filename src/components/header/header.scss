@@ -27,9 +27,40 @@
 
 }
 
+.category-tab-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 .categories-tab {
 
 }
+
+.category-options {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 50px;
+  min-width: 200px;
+  z-index: 1;
+
+  .category-option {
+    background-color: white;
+    border: none;
+    margin-right: auto;
+    width: 100%;
+    justify-content: left;
+    color: black;
+  }
+
+  .category-option:hover {
+    background-color: #e6e8ef;
+    font-weight: bold;
+  }
+}
+
 
 .search-bar-wrapper {
   margin: 0 12px;

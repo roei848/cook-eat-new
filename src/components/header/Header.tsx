@@ -1,8 +1,8 @@
-import React, {Dispatch, SetStateAction} from 'react';
+import React, {Dispatch, SetStateAction, useState} from 'react';
 import {logoImage} from '../../utils/globals';
 import {Search} from '@mui/icons-material';
-import {InputAdornment} from '@mui/material';
-import {MenuDropdown, TextInput} from '../../utils/materialComponents';
+import {Button, ButtonGroup, InputAdornment} from '@mui/material';
+import {TextInput} from '../../utils/materialComponents';
 import {Category} from '../../utils/Enums';
 import './header.scss'
 
@@ -12,34 +12,44 @@ interface HeaderProps {
 }
 
 export default function Header(props: HeaderProps) {
-    const [menuAnchorEl, setMenuAnchorEl] = React.useState<null | HTMLElement>(null);
-    const isMenuOpen = Boolean(menuAnchorEl);
+    const [isCategoryTabOpen, setIsCategoryTabOpen] = useState<boolean>(false);
 
-    const handleOpenMenu = (event: React.MouseEvent<HTMLElement>) => {
-        setMenuAnchorEl(event.currentTarget);
-    };
+    const handleClickOnCategory = (clickedCategory: string) => {
+        console.log(clickedCategory);
+        setIsCategoryTabOpen(false);
+    }
 
-    const handleCloseMenu = () => {
-        setMenuAnchorEl(null);
-    };
-
-
-    const categoryItems = Object.entries(Category).map(([key, value]) => ({
-        value: key,
-        label: value,
-        onClickFunction: () => console.log(`${value} clicked`)
-    }));
+    const handleHomeTabClick = () => {
+        console.log("Click on Home tab");
+    }
 
     return (
         <div className="header-wrapper">
             <img src={logoImage} alt="" className="header-logo-img"/>
-            <div className="home-tab">Home</div>
-            <div className="categories-tab" onClick={handleOpenMenu}>Categories</div>
-            <MenuDropdown
-                menuAnchorEl={menuAnchorEl}
-                isOpen={isMenuOpen}
-                handleClose={handleCloseMenu}
-                menuItems={categoryItems}/>
+            <div className="home-tab" onClick={handleHomeTabClick}>Home</div>
+            <div className="category-tab-wrapper">
+                <div
+                    className="categories-tab"
+                    onClick={() => setIsCategoryTabOpen(prevState => !prevState)}
+                >
+                    Categories
+                </div>
+                {isCategoryTabOpen && <ButtonGroup
+                    orientation="vertical"
+                    variant="contained"
+                    className="category-options"
+                >
+                    {Object.entries(Category).map(([key, value], index) => {
+                        return <Button
+                            key={index}
+                            className="category-option"
+                            onClick={() => handleClickOnCategory(key)}
+                        >
+                            {value}
+                        </Button>
+                    })}
+                </ButtonGroup>}
+            </div>
             <div className="search-bar-wrapper">
                 <TextInput
                     label=""
@@ -60,7 +70,7 @@ export default function Header(props: HeaderProps) {
                 />
             </div>
             <div className="add-recipe-button">
-                Add Recipe +
+                Add Recipe
             </div>
         </div>
     );

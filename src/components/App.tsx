@@ -4,6 +4,8 @@ import {addDocument, getDocuments, getDocumentsRealTime} from '../firebase/fires
 import {RecipeEntity} from "../utils/Entities";
 import {Category, Relative} from "../utils/Enums";
 import Header from "./header/Header";
+import RecipeCardsList from "./cards/RecipeCardsList";
+import {hardcoded_recipes} from "../utils/hardcoded_recipe";
 import './app.scss';
 
 export default function App() {
@@ -11,7 +13,6 @@ export default function App() {
     const [searchValue, setSearchValue] = useState<string>('');
 
     useEffect(() => {
-        // Assume globals.RecipesCollectionName is defined and holds your collection name
         const unsubscribe = getDocumentsRealTime(globals.RecipesCollectionName, setRecipes);
 
         // Cleanup function to unsubscribe from the listener when the component unmounts
@@ -55,6 +56,7 @@ export default function App() {
     return (
         <div className="app-wrapper">
             <Header searchValue={searchValue} setSearchValue={setSearchValue}/>
+            <RecipeCardsList recipes={recipes.length > 0 ? recipes : hardcoded_recipes as RecipeEntity[]} title="Your Favorites Recipes"/>
             {/*<button onClick={addHardcodedRecipe}>Click Me!</button>*/}
         </div>
     );

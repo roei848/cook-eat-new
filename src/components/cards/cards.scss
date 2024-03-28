@@ -1,0 +1,61 @@
+@import "../../utils/globals";
+
+.cards-section-wrapper {
+  margin: 0 20px;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.cards-list-wrapper {
+  display: flex;
+  overflow-x: scroll;
+}
+
+.cards-list-wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.recipe-card-wrapper {
+  height: 320px;
+  min-width: 200px;
+  width: 200px;
+  border: 1px solid $deep-carrot;
+  border-radius: 4px;
+  background-color: #C6C7C9;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 4px;
+}
+
+.recipe-card-image {
+  height: 200px;
+  width: 160px;
+  object-fit: contain;
+}
+
+.recipe-title {
+  font-size: 20px;
+  font-weight: bold;
+  color: dodgerblue;
+}
+
+.recipe-time-wrapper {
+  display: flex;
+  .recipe-time-text {
+
+  }
+
+  .recipe-time {
+
+  }
+}
+
+.recipe-favorite-icon {
+  .favorite {
+    color: #d74012;
+  }
+}

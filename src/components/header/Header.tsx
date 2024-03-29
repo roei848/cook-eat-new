@@ -1,8 +1,9 @@
-import React, {Dispatch, SetStateAction, useState} from 'react';
+import React, {Dispatch, SetStateAction, useRef, useState} from 'react';
 import {logoImage} from '../../utils/globals';
 import {Search} from '@mui/icons-material';
 import {Button, ButtonGroup, InputAdornment} from '@mui/material';
 import {TextInput} from '../../utils/materialComponents';
+import {useOutsideClick} from "../../utils/Helper";
 import {Category} from '../../utils/Enums';
 import './header.scss'
 
@@ -13,6 +14,10 @@ interface HeaderProps {
 
 export default function Header(props: HeaderProps) {
     const [isCategoryTabOpen, setIsCategoryTabOpen] = useState<boolean>(false);
+    const buttonGroupRef = useRef<HTMLDivElement>(null);
+
+    // Use the custom hook to close the ButtonGroup when clicking outside
+    useOutsideClick(buttonGroupRef, () => setIsCategoryTabOpen(false));
 
     const handleClickOnCategory = (clickedCategory: string) => {
         console.log(clickedCategory);
@@ -27,7 +32,7 @@ export default function Header(props: HeaderProps) {
         <div className="header-wrapper">
             <img src={logoImage} alt="" className="header-logo-img"/>
             <div className="home-tab" onClick={handleHomeTabClick}>Home</div>
-            <div className="category-tab-wrapper">
+            <div className="category-tab-wrapper" ref={buttonGroupRef}>
                 <div
                     className="categories-tab"
                     onClick={() => setIsCategoryTabOpen(prevState => !prevState)}

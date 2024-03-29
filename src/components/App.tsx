@@ -1,18 +1,18 @@
 import React, {useState, useEffect} from 'react';
+import {BrowserRouter, Route, Routes} from "react-router-dom";
+import {addDocument, getDocumentsRealTime} from '../firebase/firestoreCommunicator';
+import Header from "./header/Header";
+import HomePage from "./pages/HomePage";
+import SearchPage from "./pages/SearchPage";
+import CategoryPage from "./pages/CategoryPage";
 import {globals} from '../utils/globals';
-import {addDocument, getDocuments, getDocumentsRealTime} from '../firebase/firestoreCommunicator';
 import {RecipeEntity} from "../utils/Entities";
 import {Category, Relative} from "../utils/Enums";
-import Header from "./header/Header";
 import {hardcoded_recipes} from "../utils/hardcoded_recipe";
 import './app.scss';
-import {BrowserRouter, Route, Routes} from "react-router-dom";
-import HomePage from "./pages/HomePage";
-import CategoryPage from "./pages/CategoryPage";
 
 export default function App() {
     const [recipes, setRecipes] = useState<RecipeEntity[]>([]);
-    const [searchValue, setSearchValue] = useState<string>('');
 
     useEffect(() => {
         const unsubscribe = getDocumentsRealTime(globals.RecipesCollectionName, setRecipes);
@@ -63,10 +63,11 @@ export default function App() {
     return (
         <div className="app-wrapper">
             <BrowserRouter>
-                <Header searchValue={searchValue} setSearchValue={setSearchValue}/>
+                <Header/>
                 <Routes>
                     <Route path="/" element={<HomePage recipes={recipes} />}/>
                     <Route path="/category/:categoryName" element={<CategoryPage recipes={recipes} />}/>
+                    <Route path="/search" element={<SearchPage recipes={recipes} />} />
                 </Routes>
             </BrowserRouter>
             {/*<button onClick={addHardcodedRecipe}>Click Me!</button>*/}

@@ -1,4 +1,4 @@
-import React, {Dispatch, SetStateAction, useRef, useState} from 'react';
+import React, {useRef, useState} from 'react';
 import {useNavigate} from "react-router-dom";
 import {Search} from '@mui/icons-material';
 import {Button, ButtonGroup, InputAdornment} from '@mui/material';
@@ -9,12 +9,12 @@ import {Category} from '../../utils/Enums';
 import './header.scss'
 
 interface HeaderProps {
-    searchValue: string;
-    setSearchValue: Dispatch<SetStateAction<string>>;
+
 }
 
 export default function Header(props: HeaderProps) {
     const navigate = useNavigate();
+    const [searchValue, setSearchValue] = useState<string>('');
     const [isCategoryTabOpen, setIsCategoryTabOpen] = useState<boolean>(false);
     const buttonGroupRef = useRef<HTMLDivElement>(null);
 
@@ -31,6 +31,16 @@ export default function Header(props: HeaderProps) {
         console.log("Click on Home tab");
         navigate("/");
     }
+
+    const handleSubmitSearch = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === "Enter") {
+            if (searchValue.trim() === "") {
+                navigate("/");
+            } else {
+                navigate(`/search?q=${encodeURIComponent(searchValue)}`);
+            }
+        }
+    };
 
     return (
         <div className="header-wrapper">
@@ -62,8 +72,8 @@ export default function Header(props: HeaderProps) {
             <div className="search-bar-wrapper">
                 <TextInput
                     label=""
-                    value={props.searchValue || ''}
-                    setState={props.setSearchValue}
+                    value={searchValue || ''}
+                    setState={setSearchValue}
                     className="search-bar-input"
                     placeholder="Search Configuration"
                     options={{
@@ -73,7 +83,8 @@ export default function Header(props: HeaderProps) {
                                     <Search/>
                                 </InputAdornment>
                             ),
-                        }
+                        },
+                        onKeyDown: handleSubmitSearch
                     }
                     }
                 />

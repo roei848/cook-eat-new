@@ -4,9 +4,11 @@ import {addDocument, getDocuments, getDocumentsRealTime} from '../firebase/fires
 import {RecipeEntity} from "../utils/Entities";
 import {Category, Relative} from "../utils/Enums";
 import Header from "./header/Header";
-import RecipeCardsList from "./cards/RecipeCardsList";
 import {hardcoded_recipes} from "../utils/hardcoded_recipe";
 import './app.scss';
+import {BrowserRouter, Route, Routes} from "react-router-dom";
+import HomePage from "./pages/HomePage";
+import CategoryPage from "./pages/CategoryPage";
 
 export default function App() {
     const [recipes, setRecipes] = useState<RecipeEntity[]>([]);
@@ -53,10 +55,20 @@ export default function App() {
     //         .catch(err => console.log(err));
     // }
 
+    // // For offline coding
+    // if (recipes.length === 0) {
+    //     setRecipes(hardcoded_recipes as RecipeEntity[]);
+    // }
+
     return (
         <div className="app-wrapper">
-            <Header searchValue={searchValue} setSearchValue={setSearchValue}/>
-            <RecipeCardsList recipes={recipes.length > 0 ? recipes : hardcoded_recipes as RecipeEntity[]} title="Your Favorites Recipes"/>
+            <BrowserRouter>
+                <Header searchValue={searchValue} setSearchValue={setSearchValue}/>
+                <Routes>
+                    <Route path="/" element={<HomePage recipes={recipes} />}/>
+                    <Route path="/category/:categoryName" element={<CategoryPage recipes={recipes} />}/>
+                </Routes>
+            </BrowserRouter>
             {/*<button onClick={addHardcodedRecipe}>Click Me!</button>*/}
         </div>
     );

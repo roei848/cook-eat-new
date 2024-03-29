@@ -1,9 +1,10 @@
 import React, {Dispatch, SetStateAction, useRef, useState} from 'react';
-import {logoImage} from '../../utils/globals';
+import {useNavigate} from "react-router-dom";
 import {Search} from '@mui/icons-material';
 import {Button, ButtonGroup, InputAdornment} from '@mui/material';
 import {TextInput} from '../../utils/materialComponents';
 import {useOutsideClick} from "../../utils/Helper";
+import {logoImage} from '../../utils/globals';
 import {Category} from '../../utils/Enums';
 import './header.scss'
 
@@ -13,6 +14,7 @@ interface HeaderProps {
 }
 
 export default function Header(props: HeaderProps) {
+    const navigate = useNavigate();
     const [isCategoryTabOpen, setIsCategoryTabOpen] = useState<boolean>(false);
     const buttonGroupRef = useRef<HTMLDivElement>(null);
 
@@ -21,11 +23,13 @@ export default function Header(props: HeaderProps) {
 
     const handleClickOnCategory = (clickedCategory: string) => {
         console.log(clickedCategory);
+        navigate("/category/" + clickedCategory.toLowerCase(), { state: { category: clickedCategory } });
         setIsCategoryTabOpen(false);
     }
 
     const handleHomeTabClick = () => {
         console.log("Click on Home tab");
+        navigate("/");
     }
 
     return (
@@ -48,7 +52,7 @@ export default function Header(props: HeaderProps) {
                         return <Button
                             key={index}
                             className="category-option"
-                            onClick={() => handleClickOnCategory(key)}
+                            onClick={() => handleClickOnCategory(value)}
                         >
                             {value}
                         </Button>

@@ -17,4 +17,6 @@ export enum Relative {
     diary = 'Diary',
     breakfast = 'Breakfast',
     healthy = 'Healthy',
+    snacks = 'Snacks',
+    quickMeals = 'Quick Meals',
 }

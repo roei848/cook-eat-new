@@ -10,8 +10,10 @@
 }
 
 .cards-list-wrapper {
-  display: flex;
-  overflow-x: scroll;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax($card-width, 1fr));
+  gap: 20px;
+  place-items: center;
 }
 
 .cards-list-wrapper::-webkit-scrollbar {
@@ -19,9 +21,8 @@
 }
 
 .recipe-card-wrapper {
-  height: 320px;
-  min-width: 200px;
-  width: 200px;
+  height: $card-height;
+  width: $card-width;
   border: 1px solid $deep-carrot;
   border-radius: 4px;
   background-color: #C6C7C9;
@@ -41,6 +42,7 @@
   font-size: 20px;
   font-weight: bold;
   color: dodgerblue;
+  text-align: center;
 }
 
 .recipe-time-wrapper {

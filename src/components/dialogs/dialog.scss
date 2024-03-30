@@ -1,0 +1,53 @@
+.dialog-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 80vh;
+  align-items: flex-start;
+  -moz-osx-font-smoothing: grayscale;
+  padding: 24px;
+  overflow-y: scroll;
+}
+
+.dialog-wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.recipe-dialog-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+
+.recipe-dialog-description {
+  margin-bottom: 8px;
+}
+
+.recipe-dialog-img {
+  width: 100%;
+  margin-bottom: 12px;
+
+  img {
+    width: 100%;
+    object-fit: contain;
+  }
+}
+
+.recipe-ingredients-wrapper, .recipe-steps-wrapper {
+  margin-bottom: 12px;
+}
+
+.recipe-ingredients-title, .recipe-steps-title {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.recipe-ingredient, .recipe-step {
+
+}
+
+.close-dialog {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  cursor: pointer;
+}

@@ -59,3 +59,12 @@
     color: #d74012;
   }
 }
+
+.show-recipe-button {
+  font-weight: bold;
+  border-radius: 4px;
+  padding: 4px 12px;
+  color: white;
+  background-color: $deep-carrot;
+  cursor: pointer;
+}

@@ -1,16 +1,27 @@
-import React, {Dispatch, SetStateAction} from 'react';
-import {RecipeEntity} from "../../utils/Entities";
+import React, {useState} from 'react';
 import {IconButton} from "@mui/material";
 import {Favorite} from "@mui/icons-material";
-import './cards.scss'
-import {updateDocument} from "../../firebase/firestoreCommunicator";
 import {globals} from "../../utils/globals";
+import {RecipeEntity} from "../../utils/Entities";
+import RecipeDialog from "../dialogs/RecipeDialog";
+import {updateDocument} from "../../firebase/firestoreCommunicator";
+import './cards.scss'
 
 interface RecipeCardProps {
     recipe: RecipeEntity;
 }
 
 export default function RecipeCard({recipe}: RecipeCardProps) {
+    const [isRecipeOpen, setIsRecipeOpen] = useState<boolean>(false);
+
+    const handleOpenRecipeDialog = () => {
+        setIsRecipeOpen(true);
+    }
+
+    const handleCloseRecipeDialog = () => {
+        setIsRecipeOpen(false);
+    }
+
     const handleFavoriteClick = (docId: string, recipeData: RecipeEntity) => {
         const newRecipeData = {...recipeData, favorite: !recipeData.favorite};
         updateDocument(globals.RecipesCollectionName, docId, newRecipeData).then(() => {
@@ -35,6 +46,8 @@ export default function RecipeCard({recipe}: RecipeCardProps) {
                     <Favorite className={`${recipe.favorite ? "favorite" : ""}`}/>
                 </IconButton>
             </div>
+            <div className="show-recipe-button" onClick={handleOpenRecipeDialog}>Show Recipe</div>
+            <RecipeDialog isOpen={isRecipeOpen} handleClose={() => handleCloseRecipeDialog()} recipe={recipe} />
         </div>
     );
 }

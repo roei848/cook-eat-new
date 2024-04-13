@@ -48,7 +48,7 @@ export default function RecipeCard({recipe}: RecipeCardProps) {
                 <div className="recipe-card-footer">
                     <div className="recipe-favorite-icon">
                         <IconButton aria-label="add to favorites" onClick={() => handleFavoriteClick(recipe.id, recipe)}>
-                            <Favorite className={`${recipe.favorite ? "favorite" : ""}`}/>
+                            <Favorite className={`${recipe.favorite ? "favorite" : "no-favorite"}`}/>
                         </IconButton>
                     </div>
                     <div className="show-recipe-button" onClick={handleOpenRecipeDialog}>Show Recipe</div>

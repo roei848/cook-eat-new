@@ -40,6 +40,7 @@
 }
 
 .recipe-card-image {
+  min-height: 240px;
   height: 240px;
   width: 100%;
   object-fit: cover;
@@ -86,16 +87,33 @@
 
   .recipe-favorite-icon {
     .favorite {
-      color: #d74012;
+      color: #f9572a;
+    }
+
+    .favorite:hover {
+      color: #ddd6cb;
+    }
+
+    .no-favorite {
+      color: #ddd6cb;
+    }
+
+    .no-favorite:hover {
+      color: #f9572a;
     }
   }
 
+  .recipe-favorite-icon:hover {
+    color: #f9572a;
+  }
+
   .show-recipe-button {
+    display: inline-block;
+    padding: 8px 16px;
+    border-radius: 8px;
+    background: linear-gradient(90deg, #f9572a, #ff9b05);
     font-weight: bold;
-    border-radius: 4px;
-    padding: 4px 12px;
     color: white;
-    background-color: $deep-carrot;
     cursor: pointer;
   }
 }

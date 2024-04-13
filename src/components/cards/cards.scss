@@ -11,9 +11,14 @@
 
 .cards-list-wrapper {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax($card-width, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
   place-items: center;
+  width: 90%;
+  max-width: 90rem;
+  grid-gap: 5rem;
+  margin: 2rem auto;
+  list-style: none;
+  padding: 0;
 }
 
 .cards-list-wrapper::-webkit-scrollbar {
@@ -21,52 +26,76 @@
 }
 
 .recipe-card-wrapper {
-  height: $card-height;
-  width: $card-width;
-  border: 1px solid $deep-carrot;
-  border-radius: 4px;
-  background-color: #C6C7C9;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  margin: 4px;
+  height: $card-height;
+  width: 100%;
+  border-radius: 4px;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  transition: all 0.3s ease-in-out;
+  color: #ddd6cb;
+  background: linear-gradient(90deg, #2c1e19, #25200f);
+  text-align: left;
 }
 
 .recipe-card-image {
-  height: 200px;
-  width: 160px;
-  object-fit: contain;
+  height: 240px;
+  width: 100%;
+  object-fit: cover;
+}
+
+.recipe-card-content {
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
 }
 
 .recipe-title {
-  font-size: 20px;
+  margin-top: 4px;
+  font-size: 24px;
   font-weight: bold;
-  color: dodgerblue;
-  text-align: center;
+}
+
+.recipe-description {
+  font-size: 16px;
+  margin-top: 4px;
 }
 
 .recipe-time-wrapper {
+  margin-top: 12px;
   display: flex;
-  .recipe-time-text {
+  align-items: center;
 
+  .recipe-time-icon {
+    display: flex;
   }
 
   .recipe-time {
-
+    margin-left: 4px;
+    height: 100%;
   }
 }
 
-.recipe-favorite-icon {
-  .favorite {
-    color: #d74012;
-  }
-}
+.recipe-card-footer {
+  display: flex;
+  align-items: center;
+  align-self: flex-end;
 
-.show-recipe-button {
-  font-weight: bold;
-  border-radius: 4px;
-  padding: 4px 12px;
-  color: white;
-  background-color: $deep-carrot;
-  cursor: pointer;
+  .recipe-favorite-icon {
+    .favorite {
+      color: #d74012;
+    }
+  }
+
+  .show-recipe-button {
+    font-weight: bold;
+    border-radius: 4px;
+    padding: 4px 12px;
+    color: white;
+    background-color: $deep-carrot;
+    cursor: pointer;
+  }
 }

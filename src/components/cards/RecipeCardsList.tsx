@@ -12,11 +12,11 @@ export default function RecipeCardsList(props: RecipeCardsListProps) {
     return (
         <div className="cards-section-wrapper">
             <h1 className="title">{props.title}</h1>
-            <div className="cards-list-wrapper">
+            <ul className="cards-list-wrapper">
                 {props.recipes.map(recipe => {
                     return <RecipeCard recipe={recipe}/>
                 })}
-            </div>
+            </ul>
         </div>
     );
 }

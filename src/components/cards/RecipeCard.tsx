@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {IconButton} from "@mui/material";
-import {Favorite} from "@mui/icons-material";
+import {AccessTime, Favorite} from "@mui/icons-material";
 import {globals} from "../../utils/globals";
 import {RecipeEntity} from "../../utils/Entities";
 import RecipeDialog from "../dialogs/RecipeDialog";
@@ -32,22 +32,29 @@ export default function RecipeCard({recipe}: RecipeCardProps) {
     }
 
     return (
-        <div className="recipe-card-wrapper">
+        <li className="recipe-card-wrapper">
             <img className="recipe-card-image" src={recipe.image} alt="" />
-            <div className="recipe-title">{recipe.title}</div>
-            <div className="recipe-time-wrapper">
-                <div className="recipe-time-text">Time:</div>
-                <div className="recipe-time">
-                    {recipe.time}
+            <div className="recipe-card-content">
+                <div>
+                    <div className="recipe-title">{recipe.title}</div>
+                    <div className="recipe-description">{recipe.description}</div>
+                    <div className="recipe-time-wrapper">
+                        <div className="recipe-time-icon"><AccessTime /></div>
+                        <div className="recipe-time">
+                            {recipe.time} minutes
+                        </div>
+                    </div>
+                </div>
+                <div className="recipe-card-footer">
+                    <div className="recipe-favorite-icon">
+                        <IconButton aria-label="add to favorites" onClick={() => handleFavoriteClick(recipe.id, recipe)}>
+                            <Favorite className={`${recipe.favorite ? "favorite" : ""}`}/>
+                        </IconButton>
+                    </div>
+                    <div className="show-recipe-button" onClick={handleOpenRecipeDialog}>Show Recipe</div>
                 </div>
             </div>
-            <div className="recipe-favorite-icon">
-                <IconButton aria-label="add to favorites" onClick={() => handleFavoriteClick(recipe.id, recipe)}>
-                    <Favorite className={`${recipe.favorite ? "favorite" : ""}`}/>
-                </IconButton>
-            </div>
-            <div className="show-recipe-button" onClick={handleOpenRecipeDialog}>Show Recipe</div>
             <RecipeDialog isOpen={isRecipeOpen} handleClose={() => handleCloseRecipeDialog()} recipe={recipe} />
-        </div>
+        </li>
     );
 }

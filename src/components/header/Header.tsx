@@ -1,18 +1,17 @@
 import React, {useRef, useState} from 'react';
 import {useNavigate} from "react-router-dom";
-import {Search} from '@mui/icons-material';
+import {Add, Search} from '@mui/icons-material';
 import {Button, ButtonGroup, InputAdornment} from '@mui/material';
 import {TextInput} from '../../utils/materialComponents';
 import {useOutsideClick} from "../../utils/Helper";
-import {logoImage} from '../../utils/globals';
 import {Category} from '../../utils/Enums';
+import MainHeaderBackground from "./HeaderGradient";
+// @ts-ignore
+import CookEatLogo from "./cook-eat.png"
 import './header.scss'
 
-interface HeaderProps {
 
-}
-
-export default function Header(props: HeaderProps) {
+export default function Header() {
     const navigate = useNavigate();
     const [searchValue, setSearchValue] = useState<string>('');
     const [isCategoryTabOpen, setIsCategoryTabOpen] = useState<boolean>(false);
@@ -44,8 +43,11 @@ export default function Header(props: HeaderProps) {
 
     return (
         <div className="header-wrapper">
-            <img src={logoImage} alt="" className="header-logo-img"/>
-            <div className="home-tab" onClick={handleHomeTabClick}>Home</div>
+            <MainHeaderBackground />
+            <div className="logo-wrapper" onClick={handleHomeTabClick}>
+                <img src={CookEatLogo} alt="" className="header-logo-img"/>
+                <div className="cook-eat-title">Cook-Eat</div>
+            </div>
             <div className="category-tab-wrapper" ref={buttonGroupRef}>
                 <div
                     className="categories-tab"
@@ -90,7 +92,7 @@ export default function Header(props: HeaderProps) {
                 />
             </div>
             <div className="add-recipe-button">
-                Add Recipe
+                <Add />
             </div>
         </div>
     );

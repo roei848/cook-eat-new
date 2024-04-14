@@ -6,6 +6,8 @@
   -moz-osx-font-smoothing: grayscale;
   padding: 24px;
   overflow-y: scroll;
+  color: #ddd6cb;
+  background: linear-gradient(90deg, #2c1e19, #25200f);
 }
 
 .dialog-wrapper::-webkit-scrollbar {

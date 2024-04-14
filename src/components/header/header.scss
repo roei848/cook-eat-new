@@ -1,6 +1,7 @@
 @import "../../utils/globals";
 
 .header-wrapper {
+  position: relative;
   display: flex;
   justify-content: space-between;
   height: $header-height;

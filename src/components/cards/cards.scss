@@ -58,6 +58,9 @@
   margin-top: 4px;
   font-size: 24px;
   font-weight: bold;
+  background: linear-gradient(90deg, #f9572a, #ff9b05);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .recipe-description {

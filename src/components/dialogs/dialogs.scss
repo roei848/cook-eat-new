@@ -88,3 +88,48 @@
   cursor: pointer;
   color: #ff8a05;
 }
+
+.add-dialog-header {
+
+}
+
+.add-dialog-title {
+  font-size: 40px;
+  font-weight: bold;
+  background: linear-gradient(90deg, #f9572a, #ff9b05);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.relatives-section {
+  width: 90%;
+  padding: 20px;
+}
+
+.relatives-title {
+  font-size: 32px;
+}
+
+.relatives-checkboxes-wrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  place-items: flex-start;
+  grid-gap: 5rem;
+  margin: 2rem auto;
+  list-style: none;
+  padding: 0;
+}
+
+.relative-wrapper {
+  font-size: 24px;
+  line-height: 32px;
+  display: flex;
+  align-items: center;
+}
+
+.relative-checkbox {
+  height: 24px;
+  width: 24px;
+  margin-right: 8px;
+  accent-color: #f9572a;
+}

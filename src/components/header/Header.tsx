@@ -9,13 +9,23 @@ import MainHeaderBackground from "./HeaderGradient";
 // @ts-ignore
 import CookEatLogo from "./cook-eat.png"
 import './header.scss'
+import AddRecipeDialog from "../dialogs/AddRecipeDIalog";
 
 
 export default function Header() {
     const navigate = useNavigate();
     const [searchValue, setSearchValue] = useState<string>('');
+    const [isAddDialogOpen, setIsAddDialogOpen] = useState<boolean>(false);
     const [isCategoryTabOpen, setIsCategoryTabOpen] = useState<boolean>(false);
     const buttonGroupRef = useRef<HTMLDivElement>(null);
+
+    const handleOpenAddDialog = () => {
+        setIsAddDialogOpen(true);
+    }
+
+    const handleCloseAddDialog = () => {
+        setIsAddDialogOpen(false);
+    }
 
     // Use the custom hook to close the ButtonGroup when clicking outside
     useOutsideClick(buttonGroupRef, () => setIsCategoryTabOpen(false));
@@ -91,9 +101,10 @@ export default function Header() {
                     }
                 />
             </div>
-            <div className="add-recipe-button">
+            <div className="add-recipe-button" onClick={handleOpenAddDialog}>
                 <Add />
             </div>
+            <AddRecipeDialog isOpen={isAddDialogOpen} handleClose={handleCloseAddDialog}/>
         </div>
     );
 }

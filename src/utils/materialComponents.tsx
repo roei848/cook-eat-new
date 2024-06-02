@@ -9,7 +9,7 @@ import "./globals.scss";
 
 interface TextInputProps {
     label: string;
-    value: string;
+    value?: string | number;
     setState?: React.Dispatch<SetStateAction<string>>;
     required?: boolean;
     className?: string;

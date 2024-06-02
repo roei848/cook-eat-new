@@ -9,6 +9,7 @@ import {globals} from '../utils/globals';
 import {RecipeEntity} from "../utils/Entities";
 import {Category, Relative} from "../utils/Enums";
 import './app.scss';
+import {hardcoded_recipes} from "../utils/hardcoded_recipe";
 
 export default function App() {
     const [recipes, setRecipes] = useState<RecipeEntity[]>([]);
@@ -170,10 +171,10 @@ export default function App() {
     //     )
     // }
 
-    // // For offline coding
-    // if (recipes.length === 0) {
-    //     setRecipes(hardcoded_recipes as RecipeEntity[]);
-    // }
+    // For offline coding
+    if (recipes.length === 0) {
+        setRecipes(hardcoded_recipes as RecipeEntity[]);
+    }
 
     return (
         <div className="app-wrapper">

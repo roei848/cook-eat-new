@@ -101,6 +101,153 @@
   -webkit-text-fill-color: transparent;
 }
 
+// General section
+.general-section {
+  width: 90%;
+  padding: 20px;
+}
+
+.my-input-wrapper {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+
+  label {
+    font-size: 20px;
+    margin-bottom: 8px;
+  }
+
+  input {
+    font-size: 20px;
+    width: 320px;
+    padding: 8px;
+    background: none;
+    border: 1px solid #ddd6cb;
+    border-radius: 8px;
+    color: #ddd6cb;
+  }
+
+  textarea {
+    font-size: 20px;
+    width: 640px;
+    padding: 8px;
+    background: none;
+    border: 1px solid #ddd6cb;
+    border-radius: 8px;
+    color: #ddd6cb;
+  }
+
+  .time-input {
+    display: flex;
+
+    .time-icon {
+      margin-left: 4px;
+    }
+  }
+
+
+  .custom-select {
+    position: relative;
+    display: inline-block;
+  }
+
+  .select-selected {
+    background-color: #f7f7f7;
+    color: #333333;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+
+  select {
+    font-size: 20px;
+    width: fit-content;
+    padding: 8px;
+    background: none;
+    color: #ddd6cb;
+    border: 1px solid #ddd6cb;
+    border-radius: 8px;
+
+    option {
+
+      div {
+        background: #25200f; // Optional: sets the background color of dropdown options
+        color: #ddd6cb; // Text color to match other inputs
+      }
+    }
+  }
+
+  input:focus, select:focus {
+    outline: none;
+  }
+}
+
+.general-title {
+  font-size: 32px;
+  margin-bottom: 20px;
+}
+
+// Ingredients section
+.ingredients-section {
+  width: 90%;
+  padding: 20px;
+}
+
+.ingredients-title {
+  font-size: 32px;
+  margin-bottom: 20px;
+}
+
+.ingredient-input-wrapper {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+
+  input {
+    font-size: 20px;
+    width: 320px;
+    padding: 8px;
+    background: none;
+    border: 1px solid #ddd6cb;
+    border-radius: 8px;
+    color: #ddd6cb;
+    margin-right: 10px;
+  }
+}
+
+// Steps Section
+.steps-section {
+  width: 90%;
+  padding: 20px;
+}
+
+.steps-title {
+  font-size: 32px;
+  margin-bottom: 20px;
+}
+
+.step-input-wrapper {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+
+  span {
+    font-size: 20px;
+    margin-right: 10px;
+  }
+
+  textarea {
+    font-size: 20px;
+    width: 640px;
+    padding: 8px;
+    background: none;
+    border: 1px solid #ddd6cb;
+    border-radius: 8px;
+    color: #ddd6cb;
+    margin-right: 10px;
+  }
+}
+
+// Relatives Section
 .relatives-section {
   width: 90%;
   padding: 20px;
@@ -132,4 +279,43 @@
   width: 24px;
   margin-right: 8px;
   accent-color: #f9572a;
+}
+
+.remove-ingredient-button, .remove-step-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #f9572a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    color: #ff9b05;
+  }
+
+  svg {
+    font-size: 24px;
+  }
+}
+
+.add-ingredient-button, .add-step-button {
+  background: none;
+  border: 1px solid #ddd6cb;
+  border-radius: 8px;
+  cursor: pointer;
+  color: #f9572a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+
+  &:hover {
+    color: #ff9b05;
+    border-color: #ff9b05;
+  }
+
+  svg {
+    font-size: 24px;
+  }
 }

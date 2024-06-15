@@ -1,12 +1,13 @@
-import React, {useState} from 'react';
-import {Slide} from "@mui/material";
-import {Add, Delete} from "@mui/icons-material";
+import React, { useState } from 'react';
+import { Slide } from '@mui/material';
+import { Add, Delete } from '@mui/icons-material';
 import Select from 'react-select';
-import {AccessTime, Close} from "@mui/icons-material";
+import { AccessTime, Close } from '@mui/icons-material';
 import Dialog from '@mui/material/Dialog';
-import {TransitionProps} from "@mui/material/transitions";
-import {Category, Relative} from "../../utils/Enums";
-import {Ingredient, Step} from "../../utils/Entities";
+import { TransitionProps } from '@mui/material/transitions';
+import { Category, Relative } from '../../utils/Enums';
+import { Ingredient, Step as RecipeStep } from '../../utils/Entities';
+import CustomStepper from '../stepper/CustomStepper';
 import './dialogs.scss';
 
 declare interface AddRecipeDialogProps {
@@ -18,30 +19,29 @@ const Transition = React.forwardRef(function Transition(
     props: TransitionProps & {
         children: React.ReactElement;
     },
-    ref: React.Ref<unknown>,
+    ref: React.Ref<unknown>
 ) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function AddRecipeDialog({handleClose, isOpen}: AddRecipeDialogProps) {
+const steps = ['General', 'Ingredients', 'Steps', 'Relatives'];
+
+export default function AddRecipeDialog({ handleClose, isOpen }: AddRecipeDialogProps) {
+    const [activeStep, setActiveStep] = useState(0);
     const [recipeTitle, setRecipeTitle] = useState<string>('');
     const [recipeDescription, setRecipeDescription] = useState<string>('');
     const [recipeTime, setRecipeTime] = useState<number>(30);
     const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
+    const [recipeImageUrl, setRecipeImageUrl] = useState<string>('');
     const [ingredients, setIngredients] = useState<Ingredient[]>([]);
-    const [steps, setSteps] = useState<Step[]>([]);
+    const [stepsData, setStepsData] = useState<RecipeStep[]>([]);
     const [checkedRelatives, setCheckedRelatives] = useState<string[]>([]);
-
-    console.log(recipeTitle, recipeDescription, recipeTime, selectedCategory)
-    console.log(ingredients)
-    console.log(steps)
 
     const categoryOptions = Object.values(Category).map(category => ({
         value: category,
         label: category
     }));
 
-    // Custom styles for React Select
     const customStyles = {
         control: (base: any) => ({
             ...base,
@@ -51,8 +51,8 @@ export default function AddRecipeDialog({handleClose, isOpen}: AddRecipeDialogPr
             color: '#ddd6cb',
             fontSize: '20px',
             padding: '4px 8px',
-            width: '320px', // Adjust width as necessary
-            minHeight: '40px', // Minimum height to align with your inputs
+            width: '320px',
+            minHeight: '40px',
         }),
         singleValue: (provided: any) => ({
             ...provided,
@@ -76,6 +76,7 @@ export default function AddRecipeDialog({handleClose, isOpen}: AddRecipeDialogPr
             },
         }),
     };
+
     const handleIngredientChange = (index: number, key: keyof Ingredient, value: string) => {
         const updatedIngredients = [...ingredients];
         updatedIngredients[index][key] = value;
@@ -92,28 +93,28 @@ export default function AddRecipeDialog({handleClose, isOpen}: AddRecipeDialogPr
         setIngredients(updatedIngredients);
     };
 
-    const handleStepChange = (index: number, key: keyof Step, value: string) => {
-        const updatedSteps = [...steps];
+    const handleStepChange = (index: number, key: keyof RecipeStep, value: string) => {
+        const updatedSteps = [...stepsData];
         if (key === 'description') {
             updatedSteps[index][key] = value;
         } else if (key === 'order') {
             updatedSteps[index][key] = parseInt(value);
         }
-        setSteps(updatedSteps);
+        setStepsData(updatedSteps);
     };
 
     const addStep = () => {
-        setSteps([...steps, { order: steps.length + 1, description: '' }]);
+        setStepsData([...stepsData, { order: stepsData.length + 1, description: '' }]);
     };
 
     const removeStep = (index: number) => {
-        const updatedSteps = [...steps];
+        const updatedSteps = [...stepsData];
         updatedSteps.splice(index, 1);
-        setSteps(updatedSteps.map((step, idx) => ({ ...step, order: idx + 1 })));
+        setStepsData(updatedSteps.map((step, idx) => ({ ...step, order: idx + 1 })));
     };
 
     const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const {value, checked} = event.target;
+        const { value, checked } = event.target;
         if (checked) {
             setCheckedRelatives([...checkedRelatives, value]);
         } else {
@@ -121,49 +122,90 @@ export default function AddRecipeDialog({handleClose, isOpen}: AddRecipeDialogPr
         }
     };
 
+    const renderSection = () => {
+        switch (activeStep) {
+            case 0:
+                return generalSection();
+            case 1:
+                return ingredientsSection();
+            case 2:
+                return stepsSection();
+            case 3:
+                return relativesSection();
+            default:
+                return null;
+        }
+    };
 
-    console.log(checkedRelatives);
+    const handleNext = () => {
+        setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    };
+
+    const handleBack = () => {
+        setActiveStep((prevActiveStep) => prevActiveStep - 1);
+    };
+
+    const handleReset = () => {
+        setActiveStep(0);
+    };
 
     const generalSection = () => {
-        return <div className="general-section">
-            <div className="general-title">Enter general details about the recipe</div>
-            <div className="general-content-wrapper">
-                <div className="my-input-wrapper">
-                    <label>Title</label>
-                    <input type="text" value={recipeTitle} onChange={(e) => setRecipeTitle(e.target.value)}/>
-                </div>
-                <div className="my-input-wrapper">
-                    <label>Description</label>
-                    <textarea value={recipeDescription} onChange={(e) => setRecipeDescription(e.target.value)}
-                              rows={3}/>
-                </div>
-                <div className="my-input-wrapper">
-                    <div className="time-input"><label>Time (min)</label><AccessTime className="time-icon"/></div>
-                    <input type="number" value={recipeTime} onChange={(e) => setRecipeTime(parseInt(e.target.value))}
-                           min={1} defaultValue={30}/>
-                </div>
-                <div className="my-input-wrapper">
-                    <label>Category</label>
-                    <Select
-                        styles={customStyles}
-                        options={categoryOptions}
-                        value={categoryOptions.find(option => option.value === selectedCategory)}
-                        onChange={(selectedOption) => setSelectedCategory(selectedOption?.value || null)}
-                        placeholder="Select a category"
-                        theme={(theme) => ({
-                            ...theme,
-                            borderRadius: 0,
-                            colors: {
-                                ...theme.colors,
-                                primary25: '#3a2c24', // Hover color
-                                primary: '#331f14', // Selected color
-                            },
-                        })}
-                    />
+        return (
+            <div className="general-section">
+                <div className="general-title">Enter general details about the recipe</div>
+                <div className="general-content-wrapper">
+                    <div className="my-input-wrapper">
+                        <label>Title</label>
+                        <input type="text" value={recipeTitle} onChange={(e) => setRecipeTitle(e.target.value)} />
+                    </div>
+                    <div className="my-input-wrapper">
+                        <label>Description</label>
+                        <textarea
+                            value={recipeDescription}
+                            onChange={(e) => setRecipeDescription(e.target.value)}
+                            rows={3}
+                        />
+                    </div>
+                    <div className="my-input-wrapper">
+                        <div className="time-input">
+                            <label>Time (min)</label>
+                            <AccessTime className="time-icon" />
+                        </div>
+                        <input
+                            type="number"
+                            value={recipeTime}
+                            onChange={(e) => setRecipeTime(parseInt(e.target.value))}
+                            min={1}
+                            defaultValue={30}
+                        />
+                    </div>
+                    <div className="my-input-wrapper">
+                        <label>Category</label>
+                        <Select
+                            styles={customStyles}
+                            options={categoryOptions}
+                            value={categoryOptions.find(option => option.value === selectedCategory)}
+                            onChange={(selectedOption) => setSelectedCategory(selectedOption?.value || null)}
+                            placeholder="Select a category"
+                            theme={(theme) => ({
+                                ...theme,
+                                borderRadius: 0,
+                                colors: {
+                                    ...theme.colors,
+                                    primary25: '#3a2c24',
+                                    primary: '#331f14',
+                                },
+                            })}
+                        />
+                    </div>
+                    <div className="my-input-wrapper">
+                        <label>Image Url</label>
+                        <input type="text" value={recipeImageUrl} onChange={(e) => setRecipeImageUrl(e.target.value)} />
+                    </div>
                 </div>
             </div>
-        </div>
-    }
+        );
+    };
 
     const ingredientsSection = () => {
         return (
@@ -202,7 +244,7 @@ export default function AddRecipeDialog({handleClose, isOpen}: AddRecipeDialogPr
             <div className="steps-section">
                 <div className="steps-title">Enter steps for this recipe</div>
                 <div>
-                    {steps.map((step, index) => (
+                    {stepsData.map((step, index) => (
                         <div key={index} className="step-input-wrapper">
                             <span>Step {step.order}</span>
                             <textarea
@@ -224,27 +266,27 @@ export default function AddRecipeDialog({handleClose, isOpen}: AddRecipeDialogPr
         );
     };
 
-
     const relativesSection = () => {
-        return <div className="relatives-section">
-            <div className="relatives-title">Choose related themes for this recipe</div>
-            <div className="relatives-checkboxes-wrapper">
-                {Object.values(Relative).map(relative => (
-                    <div key={relative} className="relative-wrapper">
-                        <input
-                            className="relative-checkbox"
-                            type="checkbox"
-                            value={relative}
-                            checked={checkedRelatives.includes(relative)}
-                            onChange={handleCheckboxChange}
-                        />
-                        {relative}
-                    </div>
-                ))}
+        return (
+            <div className="relatives-section">
+                <div className="relatives-title">Choose related themes for this recipe</div>
+                <div className="relatives-checkboxes-wrapper">
+                    {Object.values(Relative).map(relative => (
+                        <div key={relative} className="relative-wrapper">
+                            <input
+                                className="relative-checkbox"
+                                type="checkbox"
+                                value={relative}
+                                checked={checkedRelatives.includes(relative)}
+                                onChange={handleCheckboxChange}
+                            />
+                            {relative}
+                        </div>
+                    ))}
+                </div>
             </div>
-        </div>
-    }
-
+        );
+    };
 
     return (
         <Dialog
@@ -255,17 +297,20 @@ export default function AddRecipeDialog({handleClose, isOpen}: AddRecipeDialogPr
         >
             <div className="dialog-wrapper">
                 <div className="close-dialog" onClick={handleClose}>
-                    <Close fontSize="large"/>
+                    <Close fontSize="large" />
                 </div>
                 <div className="add-dialog-header">
-                    <div className="add-dialog-title">
-                        Add A New Recipe
-                    </div>
+                    <div className="add-dialog-title">Add A New Recipe</div>
                 </div>
-                {generalSection()}
-                {ingredientsSection()}
-                {stepsSection()}
-                {relativesSection()}
+                <CustomStepper
+                    steps={steps}
+                    activeStep={activeStep}
+                    onNext={handleNext}
+                    onBack={handleBack}
+                    onReset={handleReset}
+                >
+                    {renderSection()}
+                </CustomStepper>
             </div>
         </Dialog>
     );

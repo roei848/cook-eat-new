@@ -2,7 +2,7 @@ import { Relative, Category } from './Enums';
 import {ReactNode} from "react";
 
 export interface RecipeEntity {
-    id: string;
+    id?: string;
     title: string;
     category: Category;
     favorite: boolean;

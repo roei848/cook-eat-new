@@ -6,11 +6,11 @@ interface CustomStepperProps {
     activeStep: number;
     onNext: () => void;
     onBack: () => void;
-    onReset: () => void;
+    onSubmit: () => void;
     children: React.ReactNode;
 }
 
-const CustomStepper: React.FC<CustomStepperProps> = ({ steps, activeStep, onNext, onBack, onReset, children }) => {
+const CustomStepper: React.FC<CustomStepperProps> = ({ steps, activeStep, onNext, onBack, onSubmit, children }) => {
     return (
         <div className="stepper-wrapper">
             <div className="stepper-header">
@@ -39,7 +39,7 @@ const CustomStepper: React.FC<CustomStepperProps> = ({ steps, activeStep, onNext
                         Next
                     </button>
                 ) : (
-                    <button className="submit-button" onClick={onReset}>
+                    <button className="submit-button" onClick={onSubmit}>
                         Submit
                     </button>
                 )}

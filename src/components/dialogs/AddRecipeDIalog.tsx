@@ -6,7 +6,7 @@ import { AccessTime, Close } from '@mui/icons-material';
 import Dialog from '@mui/material/Dialog';
 import { TransitionProps } from '@mui/material/transitions';
 import { Category, Relative } from '../../utils/Enums';
-import { Ingredient, Step as RecipeStep } from '../../utils/Entities';
+import {Ingredient, RecipeEntity, Step} from '../../utils/Entities';
 import CustomStepper from '../stepper/CustomStepper';
 import './dialogs.scss';
 
@@ -31,10 +31,10 @@ export default function AddRecipeDialog({ handleClose, isOpen }: AddRecipeDialog
     const [recipeTitle, setRecipeTitle] = useState<string>('');
     const [recipeDescription, setRecipeDescription] = useState<string>('');
     const [recipeTime, setRecipeTime] = useState<number>(30);
-    const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
+    const [recipeCategory, setRecipeCategory] = useState<Category | null>(null);
     const [recipeImageUrl, setRecipeImageUrl] = useState<string>('');
-    const [ingredients, setIngredients] = useState<Ingredient[]>([]);
-    const [stepsData, setStepsData] = useState<RecipeStep[]>([]);
+    const [recipeIngredients, setRecipeIngredients] = useState<Ingredient[]>([]);
+    const [recipeSteps, setRecipeSteps] = useState<Step[]>([]);
     const [checkedRelatives, setCheckedRelatives] = useState<string[]>([]);
 
     const categoryOptions = Object.values(Category).map(category => ({
@@ -78,39 +78,39 @@ export default function AddRecipeDialog({ handleClose, isOpen }: AddRecipeDialog
     };
 
     const handleIngredientChange = (index: number, key: keyof Ingredient, value: string) => {
-        const updatedIngredients = [...ingredients];
+        const updatedIngredients = [...recipeIngredients];
         updatedIngredients[index][key] = value;
-        setIngredients(updatedIngredients);
+        setRecipeIngredients(updatedIngredients);
     };
 
     const addIngredient = () => {
-        setIngredients([...ingredients, { name: '', quantity: '' }]);
+        setRecipeIngredients([...recipeIngredients, { name: '', quantity: '' }]);
     };
 
     const removeIngredient = (index: number) => {
-        const updatedIngredients = [...ingredients];
+        const updatedIngredients = [...recipeIngredients];
         updatedIngredients.splice(index, 1);
-        setIngredients(updatedIngredients);
+        setRecipeIngredients(updatedIngredients);
     };
 
-    const handleStepChange = (index: number, key: keyof RecipeStep, value: string) => {
-        const updatedSteps = [...stepsData];
+    const handleStepChange = (index: number, key: keyof Step, value: string) => {
+        const updatedSteps = [...recipeSteps];
         if (key === 'description') {
             updatedSteps[index][key] = value;
         } else if (key === 'order') {
             updatedSteps[index][key] = parseInt(value);
         }
-        setStepsData(updatedSteps);
+        setRecipeSteps(updatedSteps);
     };
 
     const addStep = () => {
-        setStepsData([...stepsData, { order: stepsData.length + 1, description: '' }]);
+        setRecipeSteps([...recipeSteps, { order: recipeSteps.length + 1, description: '' }]);
     };
 
     const removeStep = (index: number) => {
-        const updatedSteps = [...stepsData];
+        const updatedSteps = [...recipeSteps];
         updatedSteps.splice(index, 1);
-        setStepsData(updatedSteps.map((step, idx) => ({ ...step, order: idx + 1 })));
+        setRecipeSteps(updatedSteps.map((step, idx) => ({ ...step, order: idx + 1 })));
     };
 
     const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -135,18 +135,6 @@ export default function AddRecipeDialog({ handleClose, isOpen }: AddRecipeDialog
             default:
                 return null;
         }
-    };
-
-    const handleNext = () => {
-        setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    };
-
-    const handleBack = () => {
-        setActiveStep((prevActiveStep) => prevActiveStep - 1);
-    };
-
-    const handleReset = () => {
-        setActiveStep(0);
     };
 
     const generalSection = () => {
@@ -184,8 +172,8 @@ export default function AddRecipeDialog({ handleClose, isOpen }: AddRecipeDialog
                         <Select
                             styles={customStyles}
                             options={categoryOptions}
-                            value={categoryOptions.find(option => option.value === selectedCategory)}
-                            onChange={(selectedOption) => setSelectedCategory(selectedOption?.value || null)}
+                            value={categoryOptions.find(option => option.value === recipeCategory)}
+                            onChange={(selectedOption) => setRecipeCategory(selectedOption?.value || null)}
                             placeholder="Select a category"
                             theme={(theme) => ({
                                 ...theme,
@@ -212,7 +200,7 @@ export default function AddRecipeDialog({ handleClose, isOpen }: AddRecipeDialog
             <div className="ingredients-section">
                 <div className="ingredients-title">Enter required ingredients for this recipe</div>
                 <div>
-                    {ingredients.map((ingredient, index) => (
+                    {recipeIngredients.map((ingredient, index) => (
                         <div key={index} className="ingredient-input-wrapper">
                             <input
                                 type="text"
@@ -244,7 +232,7 @@ export default function AddRecipeDialog({ handleClose, isOpen }: AddRecipeDialog
             <div className="steps-section">
                 <div className="steps-title">Enter steps for this recipe</div>
                 <div>
-                    {stepsData.map((step, index) => (
+                    {recipeSteps.map((step, index) => (
                         <div key={index} className="step-input-wrapper">
                             <span>Step {step.order}</span>
                             <textarea
@@ -288,6 +276,116 @@ export default function AddRecipeDialog({ handleClose, isOpen }: AddRecipeDialog
         );
     };
 
+    const validateGeneralSection = () => {
+        if (!recipeTitle.trim()) {
+            alert("Please enter a title.");
+            return false;
+        }
+        if (!recipeDescription.trim()) {
+            alert("Please enter a description.");
+            return false;
+        }
+        if (!recipeTime || recipeTime < 1) {
+            alert("Please enter a valid time.");
+            return false;
+        }
+        if (!recipeCategory) {
+            alert("Please select a category.");
+            return false;
+        }
+        if (!recipeImageUrl.trim()) {
+            alert("Please enter an image URL.");
+            return false;
+        }
+        return true;
+    };
+
+    const validateIngredientsSection = () => {
+        if (recipeIngredients.length === 0) {
+            alert("Please add at least one ingredient.");
+            return false;
+        }
+        for (const ingredient of recipeIngredients) {
+            if (!ingredient.name.trim()) {
+                alert("Please enter the name of each ingredient.");
+                return false;
+            }
+            if (!ingredient.quantity.trim()) {
+                alert("Please enter the quantity of each ingredient.");
+                return false;
+            }
+        }
+        return true;
+    };
+
+    const validateStepsSection = () => {
+        if (recipeSteps.length === 0) {
+            alert("Please add at least one step.");
+            return false;
+        }
+        for (const step of recipeSteps) {
+            if (!step.description.trim()) {
+                alert("Please enter a description for each step.");
+                return false;
+            }
+        }
+        return true;
+    };
+
+    const validateRelativesSection = () => {
+        if (checkedRelatives.length === 0) {
+            alert("Please select at least one related theme.");
+            return false;
+        }
+        return true;
+    };
+
+
+    const handleNext = () => {
+        let isValid = false;
+
+        switch (activeStep) {
+            case 0:
+                isValid = validateGeneralSection();
+                break;
+            case 1:
+                isValid = validateIngredientsSection();
+                break;
+            case 2:
+                isValid = validateStepsSection();
+                break;
+            case 3:
+                isValid = validateRelativesSection();
+                break;
+            default:
+                break;
+        }
+
+        if (isValid) {
+            setActiveStep((prevActiveStep) => prevActiveStep + 1);
+        }
+    };
+
+    const handleBack = () => {
+        setActiveStep((prevActiveStep) => prevActiveStep - 1);
+    };
+
+    const handleSubmit = () => {
+        const newRecipe: RecipeEntity = {
+            title: recipeTitle,
+            category: recipeCategory as Category,
+            favorite: false,
+            description: recipeDescription,
+            ingredients: recipeIngredients,
+            relatives: checkedRelatives as Relative[],
+            steps: recipeSteps,
+            time: recipeTime,
+            image: recipeImageUrl,
+        }
+
+        console.log(newRecipe);
+    };
+
     return (
         <Dialog
             fullScreen
@@ -307,7 +405,7 @@ export default function AddRecipeDialog({ handleClose, isOpen }: AddRecipeDialog
                     activeStep={activeStep}
                     onNext={handleNext}
                     onBack={handleBack}
-                    onReset={handleReset}
+                    onSubmit={handleSubmit}
                 >
                     {renderSection()}
                 </CustomStepper>

@@ -20,10 +20,8 @@ export const getDocumentsRealTime = (
     );
 };
 
-export const addDocument = async (collectionName: string, data: any) => {
-    const addedDocument = await addDoc(collection(dbRef, collectionName), data);
-
-    return addedDocument.id;
+export const addDocument = (collectionName: string, data: any) => {
+    return addDoc(collection(dbRef, collectionName), data);
 }
 
 export const deleteDocument = async (collectionName: string, documentId: string) => {

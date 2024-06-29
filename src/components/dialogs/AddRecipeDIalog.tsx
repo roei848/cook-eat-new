@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
-import { Slide } from '@mui/material';
-import { Add, Delete } from '@mui/icons-material';
 import Select from 'react-select';
-import { AccessTime, Close } from '@mui/icons-material';
 import Dialog from '@mui/material/Dialog';
-import { TransitionProps } from '@mui/material/transitions';
-import { Category, Relative } from '../../utils/Enums';
-import {Ingredient, RecipeEntity, Step} from '../../utils/Entities';
 import CustomStepper from '../stepper/CustomStepper';
+import { Slide } from '@mui/material';
+import {globals} from '../../utils/globals';
+import { Add, Delete } from '@mui/icons-material';
+import { Category, Relative } from '../../utils/Enums';
+import { AccessTime, Close } from '@mui/icons-material';
+import {addDocument} from "../../firebase/firestoreCommunicator";
+import { TransitionProps } from '@mui/material/transitions';
+import {Ingredient, RecipeEntity, Step} from '../../utils/Entities';
+import {toast} from "react-toastify";
 import './dialogs.scss';
 
 declare interface AddRecipeDialogProps {
@@ -383,7 +386,12 @@ export default function AddRecipeDialog({ handleClose, isOpen }: AddRecipeDialog
             image: recipeImageUrl,
         }
 
-        console.log(newRecipe);
+        addDocument(globals.RecipesCollectionName, newRecipe).then(() => {
+            toast.success("Recipes added successfully");
+        }).catch((err) => {
+            console.error(err);
+            toast.error(err);
+        });
     };
 
     return (

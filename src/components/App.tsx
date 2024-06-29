@@ -8,8 +8,10 @@ import CategoryPage from "./pages/CategoryPage";
 import {globals} from '../utils/globals';
 import {RecipeEntity} from "../utils/Entities";
 import {Category, Relative} from "../utils/Enums";
-import './app.scss';
+import { ToastContainer } from 'react-toastify';
 import {hardcoded_recipes} from "../utils/hardcoded_recipe";
+import 'react-toastify/dist/ReactToastify.css';
+import './app.scss';
 
 export default function App() {
     const [recipes, setRecipes] = useState<RecipeEntity[]>([]);
@@ -186,6 +188,7 @@ export default function App() {
                     <Route path="/search" element={<SearchPage recipes={recipes} />} />
                 </Routes>
             </BrowserRouter>
+            <ToastContainer />
             {/*<button onClick={addHardcodedRecipe}>Click Me!</button>*/}
         </div>
     );
